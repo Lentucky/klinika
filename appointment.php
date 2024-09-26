@@ -7,7 +7,9 @@ include('config/connection.php');
 <div class="">
     <h1 class="white-text">Clients</h1>
     <div class="app-buttons">
-        <button class="btn btn-primary">Create New Appointment</button>
+        <button class="btn btn-primary">
+            <a href="add-appointment.php">Create New Appointment</a>
+        </button>
 
         <form action="" method="GET">
             <div class="input-group mb-3">
@@ -97,8 +99,8 @@ include('config/connection.php');
                             <td><?php echo $formatted_start_time; ?> - <?php echo $formatted_end_time; ?></td>
                             <td><?php echo $qrcode; ?></td>
                             <td>
-                                <button class="btn btn-primary">Edit</button>
-                                <button class="btn btn-danger">Delete</button>
+                                <button class="btn btn-primary" href="edit-appointment.php?id=<?php echo $id; ?>" >Edit</button>
+                                <button class="btn btn-danger" href="delete-appointment.php?id=<?php echo $id; ?>" >Delete</button>
                             </td>
                         </tr>
 

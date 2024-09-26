@@ -1,11 +1,45 @@
 <?php include("partials/header.php");
-session_start();
+    session_start();
+
+    $appointmentid = $_GET['id'];
+
+    $stmt = $database->prepare("SELECT * FROM appointment WHERE id = ?");
+    $stmt->bind_param("i", $appointmentid); 
+
+    if($stmt->execute())
+    {
+        $result = $stmt->get_result();
+
+        if($result==1)
+        {
+            $appoid = $row['appoid'];
+            $pid = $row['pid'];
+
+            // Separate first name and last name
+            $apponum = $row['apponum'];
+            $start_time = $row['start_time'];
+            $end_time = $row['end_time'];
+            $servid = $row['servid'];
+            $qrcode = $row['qrcode'];
+        }
+        else
+        {
+            header('appointment.php');
+            exit();
+        }
+    }else{
+        echo "Error: ".$stmt->error;
+    }
+
+    $stmt->close();
+    ob_start();
+
 include("config/connection.php"); ?>
 
 <form action="" method="POST">
     <div class="form-group">
         <label>Patient</label>
-        <input type="text" class="form-control" id="patient" name="patient" placeholder="Enter patient name">
+        <input type="text" class="form-control" id="patient" name="patient" placeholder="Enter patient name" value="<?php echo"";?>">
         <input type="hidden" id="patient_id" name="patient_id">
 
         <div id="patientList" class="list-group"></div>
@@ -20,15 +54,15 @@ include("config/connection.php"); ?>
 
     <div class="form-group">
         <label for="start_time">Appointment Start Time</label>
-        <input type="time" class="form-control" id="start_time" name="start_time">
+        <input type="time" class="form-control" id="start_time" name="start_time" value="<?php echo"$start_time";?>">
 
         <label for="end_time">Appointment End Time</label>
-        <input type="time" class="form-control" id="end_time" name="end_time">
+        <input type="time" class="form-control" id="end_time" name="end_time" value="<?php echo"$end_time";?>">
     </div>
 
     <div class="form-group">
         <label for="serviceSelect">Service</label>
-        <select class="form-control" id="serviceSelect" name="service">
+        <select class="form-control" id="serviceSelect" name="service" value="<?php echo"$start_time";?>">
             <?php
             // Query to get the services from the database
             $sql = "SELECT * FROM service";
