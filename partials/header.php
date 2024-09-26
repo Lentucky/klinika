@@ -28,7 +28,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item mx-2"><a href="#about" class="nav-link">Schedule</a></li>
                 <li class="nav-item mx-2"><a href="appointment.php" class="nav-link">Appointment</a></li>
-                <li class="nav-item mx-2"><a href="#education" class="nav-link">Patients</a></li>
+                <li class="nav-item mx-2"><a href="patients.php" class="nav-link">Patients</a></li>
                 <li class="nav-item mx-2"><a href="#skills" class="nav-link">Transactions</a></li>
                 <li class="nav-item mx-2"><a href="#contact" class="nav-link">Logout</a></li>
             </ul>
