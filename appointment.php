@@ -2,122 +2,114 @@
 include('partials/header.php'); 
 
 include('config/connection.php');
+
  ?>
-<div class="container">
+<div class="">
     <h1 class="white-text">Clients</h1>
-    <form action="" method="post">
-        <input type="date" name="sheduledate" id="date" class="input-text filter-container-items" style="margin: 0;width: 95%;">
-    </form>
+    <div class="app-buttons">
+        <button class="btn btn-primary">Create New Appointment</button>
+
+        <form action="" method="GET">
+            <div class="input-group mb-3">
+                <input type="text" name="search" class="form-control" placeholder="Search Patient" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+            </div>
+            <div class="input-group mb-3">
+                <input type="date" name="scheduledate" class="form-control" value="<?php echo isset($_GET['scheduledate']) ? $_GET['scheduledate'] : ''; ?>">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+    </div>
     <br>
 
-    <table class="table table-striped table-dark">
+    <table class="table table-striped table-light">
     <thead>
         <tr>
         <th scope="col">Appointment ID</th>
         <th scope="col">Patient Name</th>
         <th scope="col">Appointment Number</th>
         <th scope="col">Appointment Date</th>
+        <th scope="col">Appointment Time</th>
         <th scope="col">QR Code</th>
+        <th scope="col">QR Events</th>
         </tr>
     </thead>
     <tbody>
         <?php 
-        if(isset($_GET['search']))
-        {
-            $filtervalues = $_GET['search'];
-            $query = "SELECT * 
-                    FROM appointment 
-                    JOIN pid ON appointment.pid = patient.pid
-                    WHERE apponum LIKE '%$filtervalues%'";
-            $query_run = mysqli_query($conn, $query);
+            // Initialize variables for search and date
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $scheduledate = isset($_GET['scheduledate']) ? $_GET['scheduledate'] : '';
 
-            if(mysqli_num_rows($query_run) > 0)
-            {
-                foreach($query_run as $items)
-                {
-                    ?>
-                    <tr>
-                        <td><?= $items['appoid']; ?></td>
-                        <td><?= $items['pname']; ?></td>
-                        <td><?= $items['apponum']; ?></td>
-                        <td><?= $items['appodate']; ?></td>
-                        <td><?= $items['qrcode']; ?></td>
-                    </tr>
-                    <?php
-                }
+            // Start building the query
+            $sql = "SELECT appointment.appoid, appointment.pid, appointment.apponum, appointment.appodate, appointment.start_time, appointment.end_time, appointment.qr_code, patient.pname 
+                    FROM appointment
+                    JOIN patient ON appointment.pid = patient.pid";
+
+            // Initialize an array to hold the conditions
+            $conditions = array();
+
+            // Check if the user entered a patient name
+            if (!empty($search)) {
+                $conditions[] = "patient.pname LIKE '%$search%'";
             }
-            else
-            {
-                ?>
-                <tr>
-                    <td colspan="7">No Record Found</td>
-                </tr>
-                <?php
+
+            // Check if the user entered a scheduled date
+            if (!empty($scheduledate)) {
+                $conditions[] = "appointment.appodate = '$scheduledate'";
             }
+
+            // Append the conditions to the query, if any
+            if (count($conditions) > 0) {
+                $sql .= " WHERE " . implode(' AND ', $conditions);
             }
-            else
-            {
-                //Query to Get all Admin
-                $sql = "SELECT             
-                        appointment.appoid, 
-                        appointment.pid, 
-                        appointment.apponum, 
-                        appointment.appodate, 
-                        appointment.qr_code,
-                        patient.pname 
-                        FROM 
-                        appointment
-                        JOIN 
-                        patient
-                        ON 
-                        appointment.pid = patient.pid";
-                //Execute the Query
-                $res = $database->query($sql);
 
-                //CHeck whether the Query is Executed of Not
-                if($res==TRUE)
-                {
-                    // Count Rows to CHeck whether we have data in database or not
-                    $count = mysqli_num_rows($res); // Function to get all the rows in database
+            // Order by appointment date
+            $sql .= " ORDER BY appointment.appodate ASC";
 
-                    //CHeck the num of rows
-                    if($count>0)
-                    {
-                        //WE HAve data in database
-                        while($rows=mysqli_fetch_assoc($res))
-                        {
-                            //Using While loop to get all the data from database.
-                            //And while loop will run as long as we have data in database
+            // Execute the query
+            $res = $database->query($sql);
 
-                            //Get individual DAta
-                            $appoid = $rows["appoid"];
-                            $pid = $rows["pid"];
-                            $apponum = $rows["apponum"];
-                            $appodate = $rows["appodate"];
-                            $qrcode = $rows["qr_code"];
-                            $pname = $rows["pname"];
+            // Check whether the query is executed successfully
+            if ($res == TRUE) {
+                // Count rows to check if data exists
+                $count = mysqli_num_rows($res);
 
-                            //Display the Values in our Table
-                            ?>
-                            
-                            <tr>
-                                <td><?php echo $appoid; ?></td>
-                                <td><?php echo $pname; ?></td>
-                                <td><?php echo $apponum; ?></td>
-                                <td><?php echo $appodate; ?></td>
-                                <td><?php echo $qrcode; ?></td>
-                            </tr>
+                // Check if there are rows returned from the database
+                if ($count > 0) {
+                    // Display the appointments
+                    while ($rows = mysqli_fetch_assoc($res)) {
+                        // Get individual data
+                        $appoid = $rows["appoid"];
+                        $pid = $rows["pid"];
+                        $apponum = $rows["apponum"];
+                        $appodate = $rows["appodate"];
+                        $formatted_start_time = date('H:i', strtotime($rows['start_time']));
+                        $formatted_end_time = date('H:i', strtotime($rows['end_time']));
+                        $qrcode = $rows["qr_code"];
+                        $pname = $rows["pname"];
+                        ?>
+                        
+                        <tr>
+                            <td><?php echo $appoid; ?></td>
+                            <td><?php echo $pname; ?></td>
+                            <td><?php echo $apponum; ?></td>
+                            <td><?php echo $appodate; ?></td>
+                            <td><?php echo $formatted_start_time; ?> - <?php echo $formatted_end_time; ?></td>
+                            <td><?php echo $qrcode; ?></td>
+                            <td>
+                                <button class="btn btn-primary">Edit</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </td>
+                        </tr>
 
-                            <?php
-
-                        }
+                        <?php
                     }
-                    else
-                    {
-                        echo "<h2 class='white-text'> You have no current clients </h2>";
-                        //We Do not Have Data in Database
-                    }
+                } else {
+                    // No records found message
+                    echo "<tr><td colspan='6' class='text-center'>No appointments found for the given criteria.</td></tr>";
                 }
+            } else {
+                echo "<h2 class='white-text'> Query failed. </h2>";
             }
         ?>
     </tbody>

@@ -88,6 +88,18 @@ section{
     
 }
 
+.app-container{
+
+    margin: 20px 10rem;
+}
+
+.app-container h1{
+    justify-content: flex-start;
+    text-align: left;
+    align-items: flex-start;
+}
+
+
 .dashboard-items{
   
     border: 2px solid #c9cbce9f;

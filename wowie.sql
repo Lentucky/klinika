@@ -19,13 +19,17 @@ CREATE TABLE IF NOT EXISTS `appointment` (
   `pid` int(10) DEFAULT NULL,
   `apponum` int(3) DEFAULT NULL,
   `appodate` date DEFAULT NULL,
+  `start_time` TIME,
+  `end_time` TIME,
+  `servid` int(11) NOT NULL,
   `qr_code` VARCHAR(255),
   PRIMARY KEY (`appoid`),
   KEY `pid` (`pid`)
 ) ;
 
-INSERT INTO `appointment` (`appoid`, `pid`, `apponum`, `appodate`,`qr_code`) VALUES
-(2, 1, 2, '2024-09-25','example-qr-code.png');
+INSERT INTO `appointment` (`appoid`, `pid`, `apponum`, `appodate`,`start_time`,`end_time`,`servid`,`qr_code`) VALUES
+(1, 2, 1, '2024-09-26','8:00','9:00',1,'example-qr-code.png'),
+(2, 1, 2, '2024-09-27','10:00','11:00',2,'example-qr-code.png');
 
 DROP TABLE IF EXISTS `patient`;
 CREATE TABLE IF NOT EXISTS `patient` (
@@ -73,5 +77,9 @@ CREATE TABLE IF NOT EXISTS `service` (
   PRIMARY KEY (`servid`),
   KEY `pid` (`service_name`)
 ) ;
+
+INSERT INTO `service` (`servid`, `service_name`) VALUES
+(1, 'Check-up'),
+(2, 'Pasta');
 
 

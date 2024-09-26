@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="I am Allen Cabansag, A Web Developer. This is my detailed portfolio on my background, experience and education.">
+    <meta name="description" content="Klinika">
     <title>Document</title>
 
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <!-- <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/admin.css"> -->
