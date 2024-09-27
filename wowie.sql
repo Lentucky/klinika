@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS `appointment` (
   `servid` int(11) NOT NULL,
   `qr_code` VARCHAR(255),
   PRIMARY KEY (`appoid`),
+  FOREIGN KEY (`pid`)
+  REFERENCES `klinika`.`patient` (`pid`),
   KEY `pid` (`pid`)
 ) ;
 
@@ -31,6 +33,7 @@ INSERT INTO `appointment` (`pid`, `apponum`, `appodate`,`start_time`,`end_time`,
 -- (1, 2, 1, '2024-09-26','8:00','9:00',1,'example-qr-code.png'),
 -- (2, 1, 2, '2024-09-27','10:00','11:00',2,'example-qr-code.png');
 (1, 2, '2024-09-27','10:00','11:00',2,'example-qr-code.png');
+
 
 DROP TABLE IF EXISTS `patient`;
 CREATE TABLE IF NOT EXISTS `patient` (
