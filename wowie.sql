@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS `appointment` (
   `servid` int(11) NOT NULL,
   `qr_code` VARCHAR(255),
   PRIMARY KEY (`appoid`),
+  FOREIGN KEY (`pid`)
+  REFERENCES `klinika`.`patient` (`pid`),
   KEY `pid` (`pid`)
 ) ;
 
@@ -31,6 +33,7 @@ INSERT INTO `appointment` (`pid`, `apponum`, `appodate`,`start_time`,`end_time`,
 -- (1, 2, 1, '2024-09-26','8:00','9:00',1,'example-qr-code.png'),
 -- (2, 1, 2, '2024-09-27','10:00','11:00',2,'example-qr-code.png');
 (1, 2, '2024-09-27','10:00','11:00',2,'example-qr-code.png');
+
 
 DROP TABLE IF EXISTS `patient`;
 CREATE TABLE IF NOT EXISTS `patient` (
@@ -82,5 +85,24 @@ CREATE TABLE IF NOT EXISTS `service` (
 INSERT INTO `service` (`servid`, `service_name`) VALUES
 (1, 'Check-up'),
 (2, 'Pasta');
+
+--patients
+
+DROP TABLE IF EXISTS `patientRecords`;
+CREATE TABLE IF NOT EXISTS `patientRecords` (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
+    dob DATE NOT NULL,
+    contact VARCHAR(15) NOT NULL,
+    email VARCHAR(100),
+    insurance VARCHAR(100),
+    allergies ENUM('yes', 'no') NOT NULL,
+    chronicConditions ENUM('yes', 'no') NOT NULL,
+    medications ENUM('yes', 'no') NOT NULL,
+    surgeries ENUM('yes', 'no') NOT NULL,
+    familyHistory ENUM('yes', 'no') NOT NULL
+) ;
+
 
 
