@@ -1,0 +1,8 @@
+- logos tab in every pages
+-
+
+new pages
+patient-files.php
+patient-files.css
+
+modify the directory in patient-files. it should be patient-filesid=? sort of ...
