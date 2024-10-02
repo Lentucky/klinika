@@ -1,6 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+body, #calendar {
+  font-family: 'Inter', sans-serif;
+  max-width: 824px;
+  margin: 50px auto;
+}
+
 .fc {
-  width: 80%;
+  width: 90%;
   max-width: 1000px;
   margin: 40px;
  align-content: center;
+}
+
+a.fc-daygrid-day-number, .fc-event-title {
+  color: black !important;
+  text-decoration: none !important;
+}
+
+
+/* Modal styles */
+#appointmentModal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  display: none;
+  width: 400px;
+}
+
+/* Modal content styles */
+.modal-content h4 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  color: #333;
+}
+.modal-content p {
+  margin: 0 0 15px;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Buttons styles */
+button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+#closeModal {
+  background-color: #f44336;
+  color: white;
+}
+#checkAppointmentBtn {
+  background-color: #498eb5;
+  color: white;
+}
+
+#closeModal:hover {
+  background-color: #d32f2f;
+}
+#checkAppointmentBtn:hover {
+  background-color: #45a049;
 }
